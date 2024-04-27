@@ -33,18 +33,19 @@ char current_username[10] = "";
 char current_password[10] = "";
 
 void login();
-void signup()
-{
+void signup() {
+	int i=0;
     FILE *f;
-    char uname[10], pword[10],c=' ';
-    int i=0, found = 0;
+    char uname[20], pword[20],c=' ';
+    char existing_uname[20], existing_pword[20];
+    int found = 0;
 
     system("cls");
     printf("\n  **************************  SIGNUP FORM  **************************  ");
-    printf(" \n                       CREATE USERNAME:-");
-    scanf("%s", &uname); 
-    printf(" \n                       CREATE PASSWORD:-");
-    while(i < 10)
+    printf(" \n                       CREATE USERNAME:");
+    scanf("%s", uname);
+    printf(" \n                       CREATE PASSWORD:");
+     while(i < 10)
         {
             pword[i] = getch();
             c = pword[i];
@@ -53,93 +54,178 @@ void signup()
             i++;
         }
         pword[i] = '\0';
-    // scanf("%s", &pword); 
 
-    f = fopen("users.txt", "a+");
-    
+    f = fopen("users.txt", "r");
     if (f != NULL) {
-        // Check if username already exists
-        char user[10], pass[10];
-        while (fscanf(f, "%s %s", user, pass) != EOF) {
-            if (strcmp(uname, user) == 0) {
+        while (fscanf(f, "%s %s", existing_uname, existing_pword) == 2) {
+            if (strcmp(uname, existing_uname) == 0) {
                 found = 1;
                 break;
             }
         }
         fclose(f);
-
-        if (found) {
-            printf("\n\n       Username already exists! Please login.\n");
-            login();
-            main1();
-        } else {
-            f = fopen("users.txt", "a+");
-            if (f != NULL) {
-                fprintf(f, "%s %s\n", uname, pword);
-                printf("\n\n       SIGNUP SUCCESSFUL! You can now login with your new credentials.");
-                strcpy(current_username, uname);
-                strcpy(current_password, pword);
-                login();
-                main1();
-            } else {
-                printf("\n\n       Error in creating user. Please try again later.");
-            }
-            fclose(f);
-            getch();
-        }
     } else {
-        printf("\n\n       Error in creating user. Please try again later.");
+        printf("\n\n       Error in accessing user data. Please try again later.\n");
+        return;
+    }
+
+    if (found) {
+        printf("\n\n       Username already exists! Please again Sign up or login\n");
+		
+	gotoxy(6,15);
+/*making horizontal line from x=6 & y=6*/
+/* here \xb2 is the hex characters*/
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(6,16);
+printf("\xb2\xb2");   /*making vertical line from x=6 & y=7*/
+gotoxy(6,17);
+printf("\t   1.SIGNUP");
+gotoxy(6,17);
+printf("\xb2\xb2");
+gotoxy(6,18);
+printf("\xb2\xb2");
+gotoxy(6,19);
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(27,16);/* making another vertical line */
+printf("\xb2\xb2");
+gotoxy(27,17);
+printf("\xb2\xb2");
+gotoxy(27,18);
+printf("\xb2\xb2");
+/*for another right rectangular box at x=32 & y=6*/
+gotoxy(45,15);
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(45,16);
+printf("\xb2\xb2");
+gotoxy(45,17);
+printf("\t   2. LOGIN");
+gotoxy(45,17);
+printf("\xb2\xb2");
+gotoxy(45,18);
+printf("\xb2\xb2");
+gotoxy(45,19);
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(66,16);
+printf("\xb2\xb2");
+gotoxy(66,17);
+printf("\xb2\xb2");
+gotoxy(66,18);
+printf("\xb2\xb2");
+/*for third middle box*/
+gotoxy(29,20);
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(29,21);
+printf("\xb2\xb2");
+gotoxy(29,22);
+printf("\t 3. EXIT");
+gotoxy(29,22);
+printf("\xb2\xb2");
+gotoxy(29,23);
+printf("\xb2\xb2");
+gotoxy(29,24);
+printf("\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2\xb2");
+gotoxy(43,21);
+printf("\xb2\xb2");
+gotoxy(43,22);
+printf("\xb2\xb2");
+gotoxy(43,23);
+printf("\xb2\xb2");
+gotoxy(20,26);
+printf("\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb\xdb");
+
+
+	gotoxy(20,32);
+printf("Enter your choice");
+gotoxy(6,36);
+
+gotoxy(38,28);
+switch(getch())
+{
+	case '1':
+		signup();
+        
+		break;
+		case '2':
+			login();
+            main1();
+			break;
+            
+			case '3':
+				out();
+				break;
+                
+				default:
+					system("cls");
+			gotoxy(6,15);
+				printf("\aInvalid Input!!!\n\n");
+				printf("\tPlease Enter 1,2,3 or 4 . Starting the main module in 5 seconds>>>>");
+Sleep(5000);
+system("cls");
+// goto l;
+	main1();			
+}
+		// signup();
+		// login();
+		// main1();
+    } else {
+        f = fopen("users.txt", "a");
+        if (f != NULL) {
+            fprintf(f, "%s %s\n", uname, pword);
+            fclose(f);
+            printf("\n\n       SIGNUP SUCCESSFUL! You can now login with your new credentials.\n");
+        login();
+		main1();
+		} else {
+            printf("\n\n       Error in creating user. Please try again later.\n");
+        }
     }
 }
 
-void login()
-{
-    int a=0, i=0;
-    char uname[10], pword[10], c=' ';
-        char user[10], pass[10];
+void login() {
+    int a = 0, i = 0;
+    char uname[10], pword[10], c = ' ';
     FILE *f;
 
-  
-        printf("\n  **************************  LOGIN FORM  **************************  ");
-        printf(" \n                       ENTER USERNAME:-");
-        scanf("%s", &uname); 
-        printf(" \n                       ENTER PASSWORD:-");
-        while(i < 10)
-        {
-            pword[i] = getch();
-            c = pword[i];
-            if(c == 13) break;
-            else printf("*");
-            i++;
-        }
-        pword[i] = '\0';
+    printf("\n  **************************  LOGIN FORM  **************************  ");
+    printf(" \n                       ENTER USERNAME:-");
+   scanf("%s",uname);
     
-    // Authenticate the user
+    printf(" \n                       ENTER PASSWORD:-");
+    while (i < 10) {
+        pword[i] = getch();
+        c = pword[i];
+        if (c == 13) break;
+        else printf("*");
+        i++;
+    }
+    pword[i] = '\0';
+
     f = fopen("users.txt", "r");
     if (f != NULL) {
-        while (fscanf(f, "%s %s", current_username, current_password) != EOF) {
-            if (strcmp(uname, current_username) == 0 && strcmp(pword, current_password) == 0) {
+        char user[10], pass[10];
+        while (fscanf(f, "%s %s", user, pass) == 2) { // Read pairs of username-password
+            printf("\nDEBUG: Comparing entered: %s-%s with stored: %s-%s\n", uname, pword, user, pass);
+            if (strcmp(uname, user) == 0 && strcmp(pword, pass) == 0) {
                 printf("\n\n       WELCOME !!!! LOGIN IS SUCCESSFUL");
                 a = 1;
                 break;
             }
+			main1();
         }
         fclose(f);
     }
 
-    // If authentication fails, prompt the user again or show an error message
     if (!a) {
         printf("\n        SORRY !!!!  LOGIN IS UNSUCCESSFUL");
-        a++;
+        printf("\n        Please try again or signup.\n");
         getch();
 		signup();
-		login();
-    }
-    if (strcmp(current_username, "") == 0 && strcmp(current_password, "") == 0) {
-        // Only clear the screen if signup credentials were not used for login
-        system("cls");
+        login(); // Prompt for login again
     }
 }
+
+
+
 
 struct CustomerDetails   //STRUCTURE DECLARATION
 {
@@ -412,7 +498,7 @@ void list()
 	printf("\t\t  PERIOD ");
 
 	
-	for(i=0;i<118;i++)
+	for(i=0;i<110;i++)
 		printf("-");
 	while(fread(&s,sizeof(s),1,f)==1)
 	{
@@ -420,7 +506,7 @@ void list()
 		printf("\n%s \t%s \t\t%s \t\t%s     \t     %s  ",s.roomnumber, s.name , s.address , s.phonenumber ,s.period);
 	}
 	printf("\n");
-	for(i=0;i<118;i++)
+	for(i=0;i<110;i++)
 		printf("-");
 
 	fclose(f);
