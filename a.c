@@ -180,49 +180,86 @@ system("cls");
         }
     }
 }
-
 void login() {
-    int a = 0, i = 0;
-    char uname[10], pword[10], c = ' ';
+    int a = 0;
+    char uname[10], pword[10], c;
     FILE *f;
 
     printf("\n  **************************  LOGIN FORM  **************************  ");
-    printf(" \n                       ENTER USERNAME:-");
-   scanf("%s",uname);
-    
-    printf(" \n                       ENTER PASSWORD:-");
-    while (i < 10) {
-        pword[i] = getch();
-        c = pword[i];
-        if (c == 13) break;
-        else printf("*");
-        i++;
+    printf("\n                       ENTER USERNAME: ");
+    scanf("%s", uname);
+
+    printf(" \n                      ENTER PASSWORD: ");
+    int i = 0;
+    while ((c = getch()) != '\r' && i < 10) { // Read password until Enter is pressed or maximum length is reached
+        pword[i++] = c;
+        printf("*");
     }
-    pword[i] = '\0';
+    pword[i] = '\0'; // Null-terminate the password string
 
     f = fopen("users.txt", "r");
     if (f != NULL) {
         char user[10], pass[10];
-        while (fscanf(f, "%s %s", user, pass) == 2) { // Read pairs of username-password
-            printf("\nDEBUG: Comparing entered: %s-%s with stored: %s-%s\n", uname, pword, user, pass);
+        while (fscanf(f, "%s %s", user, pass) == 2) {
             if (strcmp(uname, user) == 0 && strcmp(pword, pass) == 0) {
                 printf("\n\n       WELCOME !!!! LOGIN IS SUCCESSFUL");
                 a = 1;
                 break;
             }
-			main1();
         }
         fclose(f);
     }
 
     if (!a) {
         printf("\n        SORRY !!!!  LOGIN IS UNSUCCESSFUL");
-        printf("\n        Please try again or signup.\n");
+        printf("\n        Please Signup with new credentials\n");
         getch();
-		signup();
-        login(); // Prompt for login again
+        signup(); // After unsuccessful login, offer signup option
     }
 }
+
+// void login() {
+//     int a = 0, i = 0;
+//     char uname[10], pword[10], c = ' ';
+//     FILE *f;
+
+//     printf("\n  **************************  LOGIN FORM  **************************  ");
+//     printf(" \n                       ENTER USERNAME:-");
+//    scanf("%s",uname);
+    
+//     printf(" \n                       ENTER PASSWORD:-");
+//     while (i < 10) {
+//         pword[i] = getch();
+//         c = pword[i];
+//         if (c == 13) break;
+//         else printf("*");
+//         i++;
+//     }
+//     pword[i] = '\0';
+
+//     f = fopen("users.txt", "r");
+//     if (f != NULL) {
+//         char user[10], pass[10];
+//         while (fscanf(f, "%s %s", user, pass) == 2) { // Read pairs of username-password
+//             printf("\nDEBUG: Comparing entered: %s-%s with stored: %s-%s\n", uname, pword, user, pass);
+//             if (strcmp(uname, user) == 0 && strcmp(pword, pass) == 0) {
+//                 printf("\n\n       WELCOME !!!! LOGIN IS SUCCESSFUL");
+//                 a = 1;
+//                 break;
+//             }
+// 			main1();
+//         }
+//         fclose(f);
+//     }
+
+//     if (!a) {
+//         printf("\n        SORRY !!!!  LOGIN IS UNSUCCESSFUL");
+//         printf("\n        Please try again or signup.\n");
+//         getch();
+// 		signup();
+//         login(); // Prompt for login again
+//     }
+// }
 
 
 
@@ -589,53 +626,94 @@ system("cls");
 	getch();
 	fclose(f);
 }
+void edit() {
+    FILE *f;
+    struct CustomerDetails s;
+    char roomnumber[20];
+    int found = 0;
 
-void edit()
-{
-	FILE *f;
-	int k=1;
-	char roomnumber[20];
-	long int size=sizeof(s);
-	if((f=fopen("add.txt","r+"))==NULL)
-		exit(0);
-	system("cls");
-	printf("Enter Room number of the customer to edit:\n\n");
-	scanf("%[^\n]",roomnumber);
-	fflush(stdin);
-	while(fread(&s,sizeof(s),1,f)==1)
-	{
-		if(strcmp(s.roomnumber,roomnumber)==0)
-		{
-			k=0;
-			printf("\nEnter Room Number     :");
-			gets(s.roomnumber);
-			printf("\nEnter Name    :");
-			fflush(stdin);
-			scanf("%s",&s.name);
-			printf("\nEnter Address        :");
-			scanf("%s",&s.address);
-			printf("\nEnter Phone number :");
-			scanf("%f",&s.phonenumber);
-			
-			scanf("%s",&s.email);
-			printf("\nEnter Period :");
-			scanf("%s",&s.period);
+    system("cls");
+    printf("Enter Room number of the customer to edit: ");
+    scanf("%s", roomnumber);
+
+    f = fopen("add.txt", "r+");
+    if (f == NULL) {
+        printf("Error in opening file.\n");
+        exit(1);
+    }
+
+    while (fread(&s, sizeof(s), 1, f) == 1) {
+        if (strcmp(s.roomnumber, roomnumber) == 0) {
+            found = 1;
+            printf("\nEnter New Room Number     : ");
+            scanf("%s", s.roomnumber);
+            printf("Enter Name    : ");
+            scanf("%s", s.name);
+            printf("Enter Address        : ");
+            scanf("%s", s.address);
+            printf("Enter Phone number : ");
+            scanf("%s", s.phonenumber);
+            printf("Enter Period : ");
+            scanf("%s", s.period);
+
+            fseek(f, -sizeof(s), SEEK_CUR); // Move back to the beginning of the record
+            fwrite(&s, sizeof(s), 1, f);
+            printf("\n\n\t\tYOUR RECORD IS SUCCESSFULLY EDITED!!!\n");
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\n\nTHE RECORD DOESN'T EXIST!!!!\n");
+    }
+
+    fclose(f);
+}
+
+// void edit()
+// {
+// 	FILE *f;
+// 	int k=;
+// 	char roomnumber[20];
+// 	long int size=sizeof(s);
+// 	if((f=fopen("add.txt","r+"))==NULL)
+// 		exit(0);
+// 	system("cls");
+// 	printf("Enter Room number of the customer to edit:\n\n");
+// 	scanf("%[^\n]",roomnumber);
+// 	fflush(stdin);
+// 	while(fread(&s,sizeof(s),1,f)==1)
+// 	{
+// 		if(strcmp(s.roomnumber,roomnumber)==0)
+// 		{
+// 			k=0;
+// 			printf("\nEnter New Room Number     :");
+// 			gets(s.roomnumber);
+// 			printf("\nEnter Name    :");
+// 			fflush(stdin);
+// 			scanf("%s",&s.name);
+// 			printf("\nEnter Address        :");
+// 			scanf("%s",&s.address);
+// 			printf("\nEnter Phone number :");
+// 			scanf("%f",&s.phonenumber);
+// 			printf("\nEnter Period :");
+// 			scanf("%s",&s.period);
 		
-			fseek(f,size,SEEK_CUR);  //to go to desired position infile
-			fwrite(&s,sizeof(s),1,f);
-			break;
-		}
-	}
-	if(k==1){
-		printf("\n\nTHE RECORD DOESN'T EXIST!!!!");
-		fclose(f);
-		getch();
-	}else{
-	fclose(f);
-	printf("\n\n\t\tYOUR RECORD IS SUCCESSFULLY EDITED!!!");
-	getch();
-}
-}
+// 			fseek(f,size,SEEK_CUR);  //to go to desired position infile
+// 			fwrite(&s,sizeof(s),1,f);
+// 			break;
+// 		}
+// 	}
+// 	if(k==1){
+// 		printf("\n\nTHE RECORD DOESN'T EXIST!!!!");
+// 		fclose(f);
+// 		getch();
+// 	}else{
+// 	fclose(f);
+// 	printf("\n\n\t\tYOUR RECORD IS SUCCESSFULLY EDITED!!!");
+// 	getch();
+// }
+// }
 void out(void) {
     int i;
     char thanks[1000] = "Thanks for using Pulchowkalaya Restaurant!!!";
